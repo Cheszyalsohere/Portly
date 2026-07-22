@@ -93,7 +93,16 @@ laravel new portly-scaffold --react --pest --database=sqlite --npm --no-interact
 
 Arti tiap flag: `--react` memasang React Starter Kit (Inertia + React + TypeScript + Tailwind + auth), `--pest` memakai Pest sebagai test runner, `--database=sqlite` menghindari kebutuhan server database, `--npm` sekalian menjalankan `npm install` dan build pertama.
 
-Expected: selesai tanpa error, dan direktori `D:\Project_Belajar\portly-scaffold` berisi `artisan`, `composer.json`, `package.json`, `resources/js/`.
+Expected: direktori `D:\Project_Belajar\portly-scaffold` berisi `artisan`, `composer.json`, `package.json`, `resources/js/`.
+
+**Jangan lanjut sebelum ini benar:**
+
+```powershell
+Set-Location D:\Project_Belajar\portly-scaffold
+php artisan --version
+```
+
+Expected: `Laravel Framework 13.x`. Kalau yang keluar `Invalid URI: Host is malformed`, baca bagian "Masalah yang Ditemui pada Step 2" di bawah — installer menulis `APP_URL` cacat, dan itu akan menjatuhkan build maupun test dengan pesan error yang menyesatkan.
 
 - [ ] **Step 3: Pindahkan isi scaffold ke dalam repo**
 
@@ -166,77 +175,85 @@ Expected: kosong, **kecuali** file yang memang harus diabaikan. Kalau `.env`, `d
 
 ### Versi Terpasang
 
-_Diisi pada Step 5:_
+Hasil Step 5, 2026-07-22:
+
+| Paket | Versi |
+|---|---|
+| `laravel/framework` | v13.21.1 |
+| `inertiajs/inertia-laravel` | v3.1.1 |
+| `laravel/fortify` | v1.37.3 |
+| `laravel/wayfinder` | v0.1.20 |
+| `larastan/larastan` | v3.10.0 |
+| `pestphp/pest` | v4.7.5 |
+| `@inertiajs/react` | ^3.0.0 |
+| `react` | ^19.2.0 |
+| `typescript` | ^5.7.2 |
+| `tailwindcss` | ^4.0.0 |
+| `vite` | ^8.0.0 |
+| `@vitejs/plugin-react` | ^5.2.0 |
+
+Tiga hal yang berbeda dari dugaan awal dan berpengaruh ke phase berikutnya:
+
+1. **Inertia 3, bukan 2.** Design doc sudah ditulis tanpa nomor versi, jadi tidak ada yang perlu diubah — tapi saat mencari dokumentasi, pastikan yang dibaca versi 3.
+2. **Autentikasi memakai Laravel Fortify**, lengkap dengan 2FA dan passkey. Kita tidak menyentuhnya; cukup tahu bahwa route auth datang dari Fortify, bukan dari controller di `app/Http/Controllers/Auth`.
+3. **Wayfinder ikut terpasang** dan menghasilkan definisi route ber-TypeScript saat build. Ini berguna nanti, tapi juga berarti `npm run build` akan gagal kalau `php artisan` sedang rusak — persis yang terjadi di bawah.
+
+### Masalah yang Ditemui pada Step 2 (dan cara memperbaikinya)
+
+Installer menulis `APP_URL` yang cacat ke `.env`:
 
 ```
-php artisan --version : 
-laravel/framework     : 
-@inertiajs/react      : 
-react                 : 
-typescript            : 
-tailwindcss           : 
-vite                  : 
+APP_URL=http://localhost:8000:8000     ← port dobel, URI tidak valid
 ```
+
+Akibatnya **setiap** perintah `php artisan` mati dengan `Invalid URI: Host is malformed`, yang lalu menjatuhkan `package:discover`, lalu `wayfinder:generate`, lalu `npm run build`. Gejalanya muncul jauh dari penyebabnya — error yang terlihat adalah build frontend gagal, padahal masalahnya satu baris di `.env`.
+
+Perbaikannya:
+
+```powershell
+(Get-Content .env -Raw) -replace 'APP_URL=http://localhost:8000:8000', 'APP_URL=http://localhost:8000' |
+    Set-Content .env -NoNewline -Encoding utf8
+php artisan package:discover
+npm run build
+```
+
+`.env.example` tidak terpengaruh — isinya sudah benar. Karena `.env` tidak masuk git, perbaikan ini harus diulang oleh siapa pun yang menjalankan `laravel new` lagi.
+
+**Kalau `npm run build` gagal di masa depan, cek `php artisan --version` lebih dulu** sebelum menyalahkan konfigurasi Vite.
 
 ---
 
 ## Task 2: Normalisasi akhir baris
 
-Git sudah memperingatkan `LF will be replaced by CRLF` saat commit design doc. Tanpa `.gitattributes`, file yang sama bisa tercatat berubah hanya karena akhir barisnya, dan diff jadi penuh derau.
-
-**Files:**
-- Create: `.gitattributes`
-
-- [ ] **Step 1: Buat `.gitattributes`**
+**Sebagian besar task ini ternyata tidak perlu dikerjakan.** Starter kit sudah membawa `.gitattributes` dengan baris yang penting:
 
 ```
 * text=auto eol=lf
-
-*.png  binary
-*.jpg  binary
-*.jpeg binary
-*.gif  binary
-*.webp binary
-*.ico  binary
-*.woff binary
-*.woff2 binary
-*.zip  binary
-*.pdf  binary
-
-*.ps1  text eol=crlf
-*.bat  text eol=crlf
 ```
 
-Baris pertama membuat seluruh file teks disimpan di git memakai LF. Dua baris terakhir mengecualikan skrip Windows, yang memang butuh CRLF.
+Itu sudah cukup — seluruh file teks disimpan di git memakai LF, dan git mendeteksi file biner secara otomatis tanpa perlu didaftarkan satu per satu. Peringatan `LF will be replaced by CRLF` yang muncul saat commit design doc memang langsung hilang begitu file ini ter-commit bersama scaffold di Task 1.
 
-- [ ] **Step 2: Terapkan ke file yang sudah ter-commit**
+Yang tersisa hanya satu: dua file di `docs/` sudah ter-commit **sebelum** `.gitattributes` ada, jadi keduanya mungkin tersimpan dengan CRLF.
+
+**Files:**
+- Modify: catatan akhir baris pada `docs/portly-design.md`, `docs/plans/2026-07-22-phase-0-fondasi.md`
+
+- [ ] **Step 1: Normalisasi file yang sudah ter-commit sebelumnya**
 
 ```powershell
 git add --renormalize .
 git status --short
 ```
 
-Expected: sejumlah file muncul sebagai `M` (modified). Itu wajar — isinya tidak berubah, hanya akhir barisnya.
+Expected: `docs/portly-design.md` dan/atau file rencana muncul sebagai `M`. Kalau tidak ada yang muncul, berarti keduanya memang sudah LF — lanjut saja ke Task 3, tidak ada yang perlu di-commit.
 
-- [ ] **Step 3: Commit**
+- [ ] **Step 2: Commit bila ada perubahan**
 
 ```powershell
-git add .gitattributes
 git commit -m @'
-chore: normalize line endings via gitattributes
-
-Store all text files with LF so Windows checkouts stop producing
-whitespace-only diffs.
+chore: renormalize line endings on docs committed before gitattributes
 '@
 ```
-
-- [ ] **Step 4: Pastikan peringatan CRLF hilang**
-
-```powershell
-git status --short
-```
-
-Expected: kosong. Commit berikutnya tidak lagi memunculkan peringatan `LF will be replaced by CRLF`.
 
 ---
 
@@ -258,17 +275,22 @@ Kolom `revision`, `published_document`, dan `published_revision` dibuat sekarang
   - Relasi: `Portfolio::user(): BelongsTo`
   - `Database\Factories\PortfolioFactory`
 
-- [ ] **Step 1: Pastikan Pest memuat ulang database tiap test**
+- [x] **Step 1: Pastikan Pest memuat ulang database tiap test**
 
-Buka `tests/Pest.php`. Blok untuk direktori `Feature` harus memakai `RefreshDatabase`. Kalau belum, ubah jadi seperti ini:
+**Sudah dikerjakan di Task 1** — ternyata installer meninggalkan `tests/Pest.php` dalam keadaan kosong (nol byte), efek lanjutan dari bug `APP_URL`. Isinya sekarang:
 
 ```php
-pest()->extend(Tests\TestCase::class)
-    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+pest()->extend(TestCase::class)
+    ->use(RefreshDatabase::class)
     ->in('Feature');
+
+pest()->extend(TestCase::class)
+    ->in('Unit');
 ```
 
-Tanpa ini, test akan saling mencemari dan kegagalannya membingungkan.
+Kenapa ini penting dan kenapa tidak ketahuan dari test yang lulus: **test bawaan starter kit ditulis gaya PHPUnit class** — tiap kelas `extends Tests\TestCase` dan menulis `use RefreshDatabase;` sendiri, jadi mereka tidak butuh `Pest.php` sama sekali. Test yang akan kita tulis mulai sini ditulis **gaya Pest** (`it('...', function () {...})`), dan gaya itu bergantung penuh pada `Pest.php`. Dengan file kosong, seluruh test kita akan gagal dengan pesan yang jauh dari penyebabnya.
+
+`phpunit.xml` bawaan starter kit sudah memakai SQLite `:memory:`, jadi test tidak pernah menyentuh database dev.
 
 - [ ] **Step 2: Tulis test yang gagal**
 
