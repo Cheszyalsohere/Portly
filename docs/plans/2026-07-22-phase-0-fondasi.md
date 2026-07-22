@@ -57,7 +57,7 @@ Ekstensi PHP yang dibutuhkan sudah aktif: `pdo_sqlite`, `zip`, `gd`, `fileinfo`,
 | `tests/Feature/PortfolioPolicyTest.php` | Pemilik boleh, orang lain tidak | 6 |
 | `app/Http/Controllers/DashboardController.php` | Menyajikan daftar portfolio milik user | 7 |
 | `resources/js/components/empty-state.tsx` | Komponen empty state yang bisa dipakai ulang | 7 |
-| `tests/Feature/DashboardTest.php` | Guest ditolak, user lihat daftar kosong | 7 |
+| `tests/Feature/DashboardPortfoliosTest.php` | User hanya melihat portfolio miliknya | 7 |
 | `vitest.config.ts` | Konfigurasi test frontend | 8 |
 | `resources/js/components/empty-state.test.tsx` | Membuktikan harness Vitest jalan | 8 |
 
@@ -1048,7 +1048,9 @@ Starter kit sudah punya halaman dashboard. Task ini menggantinya dengan daftar p
 - Create: `resources/js/components/empty-state.tsx`
 - Modify: `resources/js/pages/dashboard.tsx`
 - Modify: `routes/web.php`
-- Test: `tests/Feature/DashboardTest.php`
+- Test: `tests/Feature/DashboardPortfoliosTest.php`
+
+**Jangan sentuh `tests/Feature/DashboardTest.php`.** File itu milik starter kit, ditulis gaya PHPUnit class, dan sudah menguji dua hal yang benar: guest dialihkan ke login, user terautentikasi mendapat 200. Test kita masuk ke file baru supaya tidak menimpanya dan supaya dua gaya penulisan tidak bercampur dalam satu file.
 
 **Interfaces:**
 - Consumes: `App\Models\Portfolio`, komponen layout dari starter kit.
@@ -1068,7 +1070,7 @@ Catat nama file dan nama komponen yang sebenarnya (starter kit terbaru memakai n
 
 - [ ] **Step 2: Tulis test yang gagal**
 
-Buat `tests/Feature/DashboardTest.php`:
+Buat `tests/Feature/DashboardPortfoliosTest.php`:
 
 ```php
 <?php
@@ -1076,10 +1078,6 @@ Buat `tests/Feature/DashboardTest.php`:
 use App\Models\Portfolio;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia;
-
-it('redirects guests to the login page', function () {
-    $this->get('/dashboard')->assertRedirect('/login');
-});
 
 it('shows no portfolios for a new user', function () {
     $user = User::factory()->create();
@@ -1121,10 +1119,10 @@ it('never lists portfolios belonging to someone else', function () {
 - [ ] **Step 3: Jalankan test, pastikan GAGAL**
 
 ```powershell
-php artisan test --filter=DashboardTest
+php artisan test --filter=DashboardPortfoliosTest
 ```
 
-Expected: test pertama mungkin sudah lulus (starter kit sudah melindungi `/dashboard`), tapi tiga sisanya FAIL karena prop `portfolios` belum ada.
+Expected: ketiga test FAIL karena prop `portfolios` belum ada.
 
 - [ ] **Step 4: Buat controller**
 
@@ -1268,10 +1266,11 @@ Bungkus isi di atas dengan komponen layout yang dipakai halaman dashboard bawaan
 - [ ] **Step 9: Jalankan test, pastikan LULUS**
 
 ```powershell
+php artisan test --filter=DashboardPortfoliosTest
 php artisan test --filter=DashboardTest
 ```
 
-Expected: 4 test PASS.
+Expected: 3 test PASS untuk yang pertama, dan 2 test starter kit tetap PASS untuk yang kedua.
 
 - [ ] **Step 10: Pastikan TypeScript dan build bersih**
 
@@ -1284,7 +1283,7 @@ Expected: selesai tanpa error TypeScript.
 - [ ] **Step 11: Commit**
 
 ```powershell
-git add app/Http/Controllers/DashboardController.php app/Models/User.php routes/web.php resources/js/components/empty-state.tsx resources/js/pages tests/Feature/DashboardTest.php
+git add app/Http/Controllers/DashboardController.php app/Models/User.php routes/web.php resources/js/components/empty-state.tsx resources/js/pages tests/Feature/DashboardPortfoliosTest.php
 git commit -m @'
 feat: show the user's portfolios on the dashboard
 
@@ -1430,7 +1429,7 @@ Expected: `users`, `portfolios`, `media`, `snapshots`, dan tabel bawaan Laravel 
 php artisan test
 ```
 
-Expected: seluruh test PASS — test bawaan starter kit ditambah `PortfolioModelTest` (6), `MediaModelTest` (4), `SnapshotModelTest` (5), `PortfolioPolicyTest` (6), `DashboardTest` (4).
+Expected: seluruh test PASS — test bawaan starter kit ditambah `PortfolioModelTest` (6), `MediaModelTest` (4), `SnapshotModelTest` (5), `PortfolioPolicyTest` (6), `DashboardPortfoliosTest` (3).
 
 - [ ] **Step 3: Jalankan seluruh test frontend**
 
