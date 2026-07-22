@@ -35,7 +35,9 @@ Batasan ini sengaja dibuat supaya produknya tidak melebar jadi builder umum:
 
 ### 2.1 Arsitektur — Laravel + Inertia + React, satu repo
 
-**Stack:** Laravel 12, Inertia 2 (+ SSR mulai Phase 6), React 19, TypeScript, Tailwind CSS 4, MySQL/SQLite, Laravel Breeze, `@dnd-kit`, Zustand.
+**Stack:** Laravel 13, Inertia (+ SSR mulai Phase 6), React, TypeScript, Tailwind CSS, SQLite (dev), `@dnd-kit`, Zustand, Pest + Vitest + Playwright.
+
+Autentikasi memakai **React Starter Kit resmi** (`laravel new --react`), bukan Breeze — starter kit sudah membawa Inertia, React, TypeScript, Tailwind, dan seluruh alur auth dalam satu perintah. Versi persis tiap paket dicatat di rencana Phase 0 setelah scaffold berjalan, bukan diasumsikan di sini.
 
 **Alasan:** Editor drag-and-drop butuh state client yang kaya (undo/redo, autosave, preview realtime) — wilayah React. Sisanya (auth, upload, penyimpanan, halaman publik) adalah CRUD biasa — wilayah Laravel. Inertia menyambungkan keduanya tanpa perlu membangun REST API, token auth, atau menangani CORS.
 
@@ -395,7 +397,7 @@ Satu alur utama: daftar → buat portfolio → tambah section → edit isi → g
 Setiap phase menghasilkan sesuatu yang bisa dibuka di browser dan dilihat jalan.
 
 ### Phase 0 — Fondasi
-Laravel 12 + Breeze + Inertia + React + TS + Tailwind. Migration lengkap (termasuk `revision`, `published_document`, `published_revision` sejak awal — kolom ini murah sekarang, mahal kalau ditambal belakangan). Model, policy, `.gitattributes`.
+Scaffold React Starter Kit (Laravel 13 + Inertia + React + TS + Tailwind + auth). Migration lengkap (termasuk `revision`, `published_document`, `published_revision` sejak awal — kolom ini murah sekarang, mahal kalau ditambal belakangan). Model, policy, `.gitattributes`.
 **Selesai kalau:** login jalan, `php artisan test` hijau, `npm run build` berhasil.
 
 ### Phase 1 — Mesin Section
