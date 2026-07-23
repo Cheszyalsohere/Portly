@@ -1,26 +1,45 @@
 import { Head } from '@inertiajs/react';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
+import { EmptyState } from '@/components/empty-state';
 import { dashboard } from '@/routes';
 
-export default function Dashboard() {
+interface PortfolioSummary {
+    id: number;
+    title: string;
+    slug: string | null;
+    updated_at: string;
+}
+
+interface DashboardProps {
+    portfolios: PortfolioSummary[];
+}
+
+export default function Dashboard({ portfolios }: DashboardProps) {
     return (
         <>
             <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                </div>
-                <div className="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                </div>
+            <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto p-4">
+                <h1 className="text-2xl font-semibold">My Portfolios</h1>
+
+                {portfolios.length === 0 ? (
+                    <EmptyState
+                        title="No portfolios yet"
+                        description="Your portfolios will appear here once you create one."
+                    />
+                ) : (
+                    <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {portfolios.map((portfolio) => (
+                            <li
+                                key={portfolio.id}
+                                className="rounded-xl border p-4"
+                            >
+                                <p className="font-medium">{portfolio.title}</p>
+                                <p className="text-sm text-muted-foreground">
+                                    {portfolio.slug ?? 'Draft'}
+                                </p>
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
         </>
     );
