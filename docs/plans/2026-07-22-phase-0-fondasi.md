@@ -465,6 +465,7 @@ class PortfolioFactory extends Factory
             'user_id'  => User::factory(),
             'title'    => fake()->words(2, true),
             'slug'     => null,
+            'revision' => 0,
             'document' => [
                 'version'  => 1,
                 'theme'    => 'minimal',
@@ -484,6 +485,8 @@ php artisan test --filter=PortfolioModelTest
 ```
 
 Expected: 6 test PASS.
+
+**Kenapa `'revision' => 0` ada di factory:** default `0` diterapkan database, bukan model. Model yang baru dibuat via factory belum memuat nilai itu ke memori sampai di-`fresh()`, jadi tanpa baris ini `create()->revision` mengembalikan `null` dan test "starts at revision zero" gagal. Menyetelnya di factory membuat objek in-memory konsisten dengan baris database.
 
 - [ ] **Step 8: Commit**
 
