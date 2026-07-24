@@ -399,6 +399,7 @@ Setiap phase menghasilkan sesuatu yang bisa dibuka di browser dan dilihat jalan.
 ### Phase 0 — Fondasi
 Scaffold React Starter Kit (Laravel 13 + Inertia + React + TS + Tailwind + auth). Migration lengkap (termasuk `revision`, `published_document`, `published_revision` sejak awal — kolom ini murah sekarang, mahal kalau ditambal belakangan). Model, policy, `.gitattributes`.
 **Selesai kalau:** login jalan, `php artisan test` hijau, `npm run build` berhasil.
+**Status:** Selesai 2026-07-24. 63 test backend + 3 test frontend hijau; alur daftar → dashboard → logout → redirect diverifikasi di browser.
 
 ### Phase 1 — Mesin Section
 Tipe `SectionDefinition`, registry, kontrak token tema + theme hooks, dan dua section pertama (About, Projects) beserta variant-nya. Sebuah halaman merender portfolio dari dokumen JSON hasil seeder. **Belum ada editor.**

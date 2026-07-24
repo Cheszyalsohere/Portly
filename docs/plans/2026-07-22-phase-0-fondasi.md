@@ -74,7 +74,7 @@ Repo ini sudah punya `.git/` dan `docs/`. `laravel new` tidak bisa menimpa direk
 **Interfaces:**
 - Produces: kerangka Laravel + Inertia + React + TS + Tailwind + auth; `php artisan`, `npm run build`, `php artisan test` bisa dijalankan.
 
-- [ ] **Step 1: Pastikan repo bersih sebelum mulai**
+- [x] **Step 1: Pastikan repo bersih sebelum mulai**
 
 ```powershell
 git -C D:\Project_Belajar\Portly status --short
@@ -82,7 +82,7 @@ git -C D:\Project_Belajar\Portly status --short
 
 Expected: tidak ada output sama sekali. Kalau ada perubahan belum di-commit, commit dulu sebelum lanjut.
 
-- [ ] **Step 2: Scaffold ke direktori sementara**
+- [x] **Step 2: Scaffold ke direktori sementara**
 
 Dijalankan dari `D:\Project_Belajar` (direktori induk), bukan dari dalam repo:
 
@@ -104,7 +104,7 @@ php artisan --version
 
 Expected: `Laravel Framework 13.x`. Kalau yang keluar `Invalid URI: Host is malformed`, baca bagian "Masalah yang Ditemui pada Step 2" di bawah — installer menulis `APP_URL` cacat, dan itu akan menjatuhkan build maupun test dengan pesan error yang menyesatkan.
 
-- [ ] **Step 3: Pindahkan isi scaffold ke dalam repo**
+- [x] **Step 3: Pindahkan isi scaffold ke dalam repo**
 
 ```powershell
 Get-ChildItem -Path D:\Project_Belajar\portly-scaffold -Force |
@@ -116,7 +116,7 @@ Set-Location D:\Project_Belajar\Portly
 
 Aman karena scaffold tidak punya `docs/` maupun `.git/`, jadi tidak ada yang bertabrakan.
 
-- [ ] **Step 4: Pastikan `docs/` selamat dan kerangka Laravel ada**
+- [x] **Step 4: Pastikan `docs/` selamat dan kerangka Laravel ada**
 
 ```powershell
 Test-Path D:\Project_Belajar\Portly\docs\portly-design.md
@@ -126,7 +126,7 @@ Test-Path D:\Project_Belajar\Portly\resources\js
 
 Expected: `True` tiga kali. Kalau salah satu `False`, **berhenti** — jangan lanjut, jangan commit.
 
-- [ ] **Step 5: Catat versi sebenarnya yang terpasang**
+- [x] **Step 5: Catat versi sebenarnya yang terpasang**
 
 ```powershell
 php artisan --version
@@ -135,7 +135,7 @@ node -e "const p=require('./package.json'); console.log(JSON.stringify({...p.dep
 
 Salin hasilnya ke bagian "Versi Terpasang" di bawah task ini. Ini bukan formalitas — task berikutnya mengasumsikan nama file dari starter kit, dan versi yang tercatat memudahkan menelusuri kalau ada yang tidak cocok.
 
-- [ ] **Step 6: Verifikasi test bawaan hijau**
+- [x] **Step 6: Verifikasi test bawaan hijau**
 
 ```powershell
 php artisan test
@@ -143,7 +143,7 @@ php artisan test
 
 Expected: seluruh test starter kit PASS. Kalau ada yang gagal di titik ini, itu masalah scaffold — selesaikan dulu, jangan ditumpuk.
 
-- [ ] **Step 7: Verifikasi build frontend berhasil**
+- [x] **Step 7: Verifikasi build frontend berhasil**
 
 ```powershell
 npm run build
@@ -151,7 +151,7 @@ npm run build
 
 Expected: selesai tanpa error, direktori `public/build` terbentuk.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```powershell
 git add .gitignore artisan composer.json composer.lock package.json package-lock.json vite.config.ts tsconfig.json phpunit.xml app bootstrap config database public resources routes storage tests
@@ -165,7 +165,7 @@ TypeScript, Tailwind, authentication), Pest, and a SQLite database.
 
 Kalau ada file/direktori dari daftar di atas yang ternyata tidak ada, hapus namanya dari perintah `git add` — jangan ganti jadi `git add .`.
 
-- [ ] **Step 9: Pastikan tidak ada yang tertinggal atau ikut terbawa**
+- [x] **Step 9: Pastikan tidak ada yang tertinggal atau ikut terbawa**
 
 ```powershell
 git status --short
@@ -238,7 +238,7 @@ Yang tersisa hanya satu: dua file di `docs/` sudah ter-commit **sebelum** `.gita
 **Files:**
 - Modify: catatan akhir baris pada `docs/portly-design.md`, `docs/plans/2026-07-22-phase-0-fondasi.md`
 
-- [ ] **Step 1: Normalisasi file yang sudah ter-commit sebelumnya**
+- [x] **Step 1: Normalisasi file yang sudah ter-commit sebelumnya**
 
 ```powershell
 git add --renormalize .
@@ -247,7 +247,7 @@ git status --short
 
 Expected: `docs/portly-design.md` dan/atau file rencana muncul sebagai `M`. Kalau tidak ada yang muncul, berarti keduanya memang sudah LF — lanjut saja ke Task 3, tidak ada yang perlu di-commit.
 
-- [ ] **Step 2: Commit bila ada perubahan**
+- [x] **Step 2: Commit bila ada perubahan**
 
 ```powershell
 git commit -m @'
@@ -292,7 +292,7 @@ Kenapa ini penting dan kenapa tidak ketahuan dari test yang lulus: **test bawaan
 
 `phpunit.xml` bawaan starter kit sudah memakai SQLite `:memory:`, jadi test tidak pernah menyentuh database dev.
 
-- [ ] **Step 2: Tulis test yang gagal**
+- [x] **Step 2: Tulis test yang gagal**
 
 Buat `tests/Feature/PortfolioModelTest.php`:
 
@@ -348,7 +348,7 @@ it('allows a null slug so unpublished drafts do not need one', function () {
 });
 ```
 
-- [ ] **Step 3: Jalankan test, pastikan GAGAL**
+- [x] **Step 3: Jalankan test, pastikan GAGAL**
 
 ```powershell
 php artisan test --filter=PortfolioModelTest
@@ -356,7 +356,7 @@ php artisan test --filter=PortfolioModelTest
 
 Expected: FAIL dengan `Class "App\Models\Portfolio" not found`.
 
-- [ ] **Step 4: Buat migration**
+- [x] **Step 4: Buat migration**
 
 Buat `database/migrations/2026_07_22_000001_create_portfolios_table.php`:
 
@@ -395,7 +395,7 @@ return new class extends Migration
 };
 ```
 
-- [ ] **Step 5: Buat model**
+- [x] **Step 5: Buat model**
 
 Buat `app/Models/Portfolio.php`:
 
@@ -442,7 +442,7 @@ class Portfolio extends Model
 }
 ```
 
-- [ ] **Step 6: Buat factory**
+- [x] **Step 6: Buat factory**
 
 Buat `database/factories/PortfolioFactory.php`:
 
@@ -478,7 +478,7 @@ class PortfolioFactory extends Factory
 }
 ```
 
-- [ ] **Step 7: Jalankan test, pastikan LULUS**
+- [x] **Step 7: Jalankan test, pastikan LULUS**
 
 ```powershell
 php artisan test --filter=PortfolioModelTest
@@ -488,7 +488,7 @@ Expected: 6 test PASS.
 
 **Kenapa `'revision' => 0` ada di factory:** default `0` diterapkan database, bukan model. Model yang baru dibuat via factory belum memuat nilai itu ke memori sampai di-`fresh()`, jadi tanpa baris ini `create()->revision` mengembalikan `null` dan test "starts at revision zero" gagal. Menyetelnya di factory membuat objek in-memory konsisten dengan baris database.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```powershell
 git add app/Models/Portfolio.php database/factories/PortfolioFactory.php database/migrations tests/Feature/PortfolioModelTest.php tests/Pest.php
@@ -518,7 +518,7 @@ optimistic concurrency and immutable publishing without a schema change.
   - Relasi: `Media::user(): BelongsTo`
   - `Database\Factories\MediaFactory`
 
-- [ ] **Step 1: Tulis test yang gagal**
+- [x] **Step 1: Tulis test yang gagal**
 
 Buat `tests/Feature/MediaModelTest.php`:
 
@@ -568,7 +568,7 @@ it('is deleted when its owner is deleted', function () {
 });
 ```
 
-- [ ] **Step 2: Jalankan test, pastikan GAGAL**
+- [x] **Step 2: Jalankan test, pastikan GAGAL**
 
 ```powershell
 php artisan test --filter=MediaModelTest
@@ -576,7 +576,7 @@ php artisan test --filter=MediaModelTest
 
 Expected: FAIL dengan `Class "App\Models\Media" not found`.
 
-- [ ] **Step 3: Buat migration**
+- [x] **Step 3: Buat migration**
 
 Buat `database/migrations/2026_07_22_000002_create_media_table.php`:
 
@@ -610,7 +610,7 @@ return new class extends Migration
 };
 ```
 
-- [ ] **Step 4: Buat model**
+- [x] **Step 4: Buat model**
 
 Buat `app/Models/Media.php`:
 
@@ -650,7 +650,7 @@ class Media extends Model
 
 `$table` ditulis eksplisit karena bentuk jamak dari "media" menurut Laravel adalah `medias`, bukan `media`.
 
-- [ ] **Step 5: Buat factory**
+- [x] **Step 5: Buat factory**
 
 Buat `database/factories/MediaFactory.php`:
 
@@ -681,7 +681,7 @@ class MediaFactory extends Factory
 }
 ```
 
-- [ ] **Step 6: Jalankan test, pastikan LULUS**
+- [x] **Step 6: Jalankan test, pastikan LULUS**
 
 ```powershell
 php artisan test --filter=MediaModelTest
@@ -689,7 +689,7 @@ php artisan test --filter=MediaModelTest
 
 Expected: 4 test PASS.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```powershell
 git add app/Models/Media.php database/factories/MediaFactory.php database/migrations tests/Feature/MediaModelTest.php
@@ -721,7 +721,7 @@ Snapshot menyimpan salinan dokumen untuk version history di Phase 7. Tabelnya di
   - Relasi: `Snapshot::portfolio(): BelongsTo`, `Portfolio::snapshots(): HasMany`
   - `Database\Factories\SnapshotFactory`
 
-- [ ] **Step 1: Tulis test yang gagal**
+- [x] **Step 1: Tulis test yang gagal**
 
 Buat `tests/Feature/SnapshotModelTest.php`:
 
@@ -767,7 +767,7 @@ it('is deleted when its portfolio is deleted', function () {
 });
 ```
 
-- [ ] **Step 2: Jalankan test, pastikan GAGAL**
+- [x] **Step 2: Jalankan test, pastikan GAGAL**
 
 ```powershell
 php artisan test --filter=SnapshotModelTest
@@ -775,7 +775,7 @@ php artisan test --filter=SnapshotModelTest
 
 Expected: FAIL dengan `Class "App\Models\Snapshot" not found`.
 
-- [ ] **Step 3: Buat migration**
+- [x] **Step 3: Buat migration**
 
 Buat `database/migrations/2026_07_22_000003_create_snapshots_table.php`:
 
@@ -807,7 +807,7 @@ return new class extends Migration
 };
 ```
 
-- [ ] **Step 4: Buat model**
+- [x] **Step 4: Buat model**
 
 Buat `app/Models/Snapshot.php`:
 
@@ -842,7 +842,7 @@ class Snapshot extends Model
 }
 ```
 
-- [ ] **Step 5: Tambahkan relasi `snapshots` ke `Portfolio`**
+- [x] **Step 5: Tambahkan relasi `snapshots` ke `Portfolio`**
 
 Di `app/Models/Portfolio.php`, tambahkan import dan method berikut setelah method `user()`:
 
@@ -857,7 +857,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     }
 ```
 
-- [ ] **Step 6: Buat factory**
+- [x] **Step 6: Buat factory**
 
 Buat `database/factories/SnapshotFactory.php`:
 
@@ -892,7 +892,7 @@ class SnapshotFactory extends Factory
 }
 ```
 
-- [ ] **Step 7: Jalankan test, pastikan LULUS**
+- [x] **Step 7: Jalankan test, pastikan LULUS**
 
 ```powershell
 php artisan test --filter=SnapshotModelTest
@@ -900,7 +900,7 @@ php artisan test --filter=SnapshotModelTest
 
 Expected: 5 test PASS.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```powershell
 git add app/Models/Snapshot.php app/Models/Portfolio.php database/factories/SnapshotFactory.php database/migrations tests/Feature/SnapshotModelTest.php
@@ -926,7 +926,7 @@ Laravel menemukan policy secara otomatis lewat konvensi nama — `App\Policies\P
 - Consumes: `App\Models\Portfolio`, `App\Models\User`.
 - Produces: `PortfolioPolicy` dengan method `view`, `update`, `delete`, masing-masing `(User $user, Portfolio $portfolio): bool`.
 
-- [ ] **Step 1: Tulis test yang gagal**
+- [x] **Step 1: Tulis test yang gagal**
 
 Buat `tests/Feature/PortfolioPolicyTest.php`:
 
@@ -979,7 +979,7 @@ it('stops a different user from deleting a portfolio', function () {
 });
 ```
 
-- [ ] **Step 2: Jalankan test, pastikan GAGAL**
+- [x] **Step 2: Jalankan test, pastikan GAGAL**
 
 ```powershell
 php artisan test --filter=PortfolioPolicyTest
@@ -987,7 +987,7 @@ php artisan test --filter=PortfolioPolicyTest
 
 Expected: FAIL — tanpa policy, `can('update', ...)` mengembalikan `false`, jadi ketiga test "owner" gagal. Tiga test "stranger" akan lulus secara kebetulan; itu wajar dan bukan alasan melewatkan langkah ini.
 
-- [ ] **Step 3: Buat policy**
+- [x] **Step 3: Buat policy**
 
 Buat `app/Policies/PortfolioPolicy.php`:
 
@@ -1023,7 +1023,7 @@ class PortfolioPolicy
 }
 ```
 
-- [ ] **Step 4: Jalankan test, pastikan LULUS**
+- [x] **Step 4: Jalankan test, pastikan LULUS**
 
 ```powershell
 php artisan test --filter=PortfolioPolicyTest
@@ -1031,7 +1031,7 @@ php artisan test --filter=PortfolioPolicyTest
 
 Expected: 6 test PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```powershell
 git add app/Policies/PortfolioPolicy.php tests/Feature/PortfolioPolicyTest.php
@@ -1062,7 +1062,7 @@ Starter kit sudah punya halaman dashboard. Task ini menggantinya dengan daftar p
   - Prop Inertia `portfolios: Array<{ id: number; title: string; slug: string | null; updated_at: string }>`
   - Komponen `EmptyState` dengan prop `{ title: string; description: string; action?: React.ReactNode }`
 
-- [ ] **Step 1: Periksa bentuk dashboard bawaan starter kit**
+- [x] **Step 1: Periksa bentuk dashboard bawaan starter kit**
 
 ```powershell
 Get-ChildItem resources\js\pages -Recurse -Filter *ashboard*
@@ -1071,7 +1071,7 @@ Select-String -Path routes\web.php -Pattern 'dashboard'
 
 Catat nama file dan nama komponen yang sebenarnya (starter kit terbaru memakai nama berhuruf kecil seperti `resources/js/pages/dashboard.tsx`). **Kalau path yang ditemukan berbeda dari yang tertulis di task ini, pakai yang ditemukan** — dan sesuaikan juga nama komponen di dalam `assertInertia` pada Step 2.
 
-- [ ] **Step 2: Tulis test yang gagal**
+- [x] **Step 2: Tulis test yang gagal**
 
 Buat `tests/Feature/DashboardPortfoliosTest.php`:
 
@@ -1119,7 +1119,7 @@ it('never lists portfolios belonging to someone else', function () {
 });
 ```
 
-- [ ] **Step 3: Jalankan test, pastikan GAGAL**
+- [x] **Step 3: Jalankan test, pastikan GAGAL**
 
 ```powershell
 php artisan test --filter=DashboardPortfoliosTest
@@ -1127,7 +1127,7 @@ php artisan test --filter=DashboardPortfoliosTest
 
 Expected: ketiga test FAIL karena prop `portfolios` belum ada.
 
-- [ ] **Step 4: Buat controller**
+- [x] **Step 4: Buat controller**
 
 Buat `app/Http/Controllers/DashboardController.php`:
 
@@ -1164,7 +1164,7 @@ class DashboardController extends Controller
 
 Kalau Step 1 menemukan nama komponen selain `dashboard`, ganti argumen `Inertia::render` agar cocok.
 
-- [ ] **Step 5: Tambahkan relasi `portfolios` ke `User`**
+- [x] **Step 5: Tambahkan relasi `portfolios` ke `User`**
 
 Di `app/Models/User.php`, tambahkan import dan method:
 
@@ -1181,7 +1181,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 `Portfolio` tidak perlu di-import karena `User` berada di namespace yang sama (`App\Models`).
 
-- [ ] **Step 6: Arahkan route dashboard ke controller**
+- [x] **Step 6: Arahkan route dashboard ke controller**
 
 Di `routes/web.php`, ganti closure dashboard bawaan starter kit dengan:
 
@@ -1195,7 +1195,7 @@ Route::get('dashboard', DashboardController::class)
 
 Pertahankan middleware yang sudah dipakai starter kit. Kalau starter kit tidak memakai `verified`, jangan tambahkan.
 
-- [ ] **Step 7: Buat komponen `EmptyState`**
+- [x] **Step 7: Buat komponen `EmptyState`**
 
 Buat `resources/js/components/empty-state.tsx`:
 
@@ -1219,7 +1219,7 @@ export function EmptyState({ title, description, action }: EmptyStateProps) {
 }
 ```
 
-- [ ] **Step 8: Pakai `EmptyState` di halaman dashboard**
+- [x] **Step 8: Pakai `EmptyState` di halaman dashboard**
 
 Ubah `resources/js/pages/dashboard.tsx` sehingga menerima prop `portfolios` dan menampilkan `EmptyState` saat kosong. Pertahankan layout dan import bawaan starter kit; hanya isi halamannya yang diganti:
 
@@ -1266,7 +1266,7 @@ export default function Dashboard({ portfolios }: DashboardProps) {
 
 Bungkus isi di atas dengan komponen layout yang dipakai halaman dashboard bawaan (misalnya `AppLayout`) supaya navigasi starter kit tidak hilang.
 
-- [ ] **Step 9: Jalankan test, pastikan LULUS**
+- [x] **Step 9: Jalankan test, pastikan LULUS**
 
 ```powershell
 php artisan test --filter=DashboardPortfoliosTest
@@ -1275,7 +1275,7 @@ php artisan test --filter=DashboardTest
 
 Expected: 3 test PASS untuk yang pertama, dan 2 test starter kit tetap PASS untuk yang kedua.
 
-- [ ] **Step 10: Pastikan TypeScript dan build bersih**
+- [x] **Step 10: Pastikan TypeScript dan build bersih**
 
 ```powershell
 npm run build
@@ -1283,7 +1283,7 @@ npm run build
 
 Expected: selesai tanpa error TypeScript.
 
-- [ ] **Step 11: Commit**
+- [x] **Step 11: Commit**
 
 ```powershell
 git add app/Http/Controllers/DashboardController.php app/Models/User.php routes/web.php resources/js/components/empty-state.tsx resources/js/pages tests/Feature/DashboardPortfoliosTest.php
@@ -1310,13 +1310,13 @@ Design doc mensyaratkan test frontend memakai Vitest. Dipasang sekarang, saat be
 - Consumes: `EmptyState` dari Task 7.
 - Produces: perintah `npm run test` yang menjalankan Vitest sekali jalan (bukan mode watch).
 
-- [ ] **Step 1: Pasang dependensi**
+- [x] **Step 1: Pasang dependensi**
 
 ```powershell
 npm install -D vitest jsdom @testing-library/react @testing-library/jest-dom @testing-library/dom
 ```
 
-- [ ] **Step 2: Buat konfigurasi Vitest**
+- [x] **Step 2: Buat konfigurasi Vitest**
 
 Buat `vitest.config.ts` di root:
 
@@ -1344,7 +1344,7 @@ File ini terpisah dari `vite.config.ts` supaya konfigurasi build aplikasi tidak 
 
 Kalau `@vitejs/plugin-react` ternyata tidak ada di `package.json` (starter kit mungkin memakai plugin lain), pasang dengan `npm install -D @vitejs/plugin-react`.
 
-- [ ] **Step 3: Tambahkan skrip `test`**
+- [x] **Step 3: Tambahkan skrip `test`**
 
 Di `package.json`, tambahkan ke dalam `"scripts"`:
 
@@ -1353,7 +1353,7 @@ Di `package.json`, tambahkan ke dalam `"scripts"`:
 "test:watch": "vitest"
 ```
 
-- [ ] **Step 4: Tulis test yang gagal**
+- [x] **Step 4: Tulis test yang gagal**
 
 Buat `resources/js/components/empty-state.test.tsx`:
 
@@ -1390,7 +1390,7 @@ describe('EmptyState', () => {
 });
 ```
 
-- [ ] **Step 5: Jalankan test**
+- [x] **Step 5: Jalankan test**
 
 ```powershell
 npm run test
@@ -1398,7 +1398,7 @@ npm run test
 
 Expected: 3 test PASS. Kalau gagal dengan error resolusi modul, periksa alias `@` di Step 2 dan pastikan `EmptyState` diekspor sebagai named export dari `resources/js/components/empty-state.tsx`.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```powershell
 git add vitest.config.ts package.json package-lock.json resources/js/components/empty-state.test.tsx
@@ -1418,7 +1418,7 @@ Phase 0 dinyatakan selesai hanya kalau seluruh perintah di bawah ini berhasil da
 
 **Files:** tidak ada yang dibuat — task ini murni verifikasi.
 
-- [ ] **Step 1: Pastikan seluruh migration jalan dari nol**
+- [x] **Step 1: Pastikan seluruh migration jalan dari nol**
 
 ```powershell
 php artisan migrate:fresh
@@ -1426,7 +1426,7 @@ php artisan migrate:fresh
 
 Expected: `users`, `portfolios`, `media`, `snapshots`, dan tabel bawaan Laravel terbentuk tanpa error.
 
-- [ ] **Step 2: Jalankan seluruh test backend**
+- [x] **Step 2: Jalankan seluruh test backend**
 
 ```powershell
 php artisan test
@@ -1434,7 +1434,7 @@ php artisan test
 
 Expected: seluruh test PASS — test bawaan starter kit ditambah `PortfolioModelTest` (6), `MediaModelTest` (4), `SnapshotModelTest` (5), `PortfolioPolicyTest` (6), `DashboardPortfoliosTest` (3).
 
-- [ ] **Step 3: Jalankan seluruh test frontend**
+- [x] **Step 3: Jalankan seluruh test frontend**
 
 ```powershell
 npm run test
@@ -1442,7 +1442,7 @@ npm run test
 
 Expected: 3 test PASS.
 
-- [ ] **Step 4: Pastikan build produksi berhasil**
+- [x] **Step 4: Pastikan build produksi berhasil**
 
 ```powershell
 npm run build
@@ -1450,7 +1450,7 @@ npm run build
 
 Expected: selesai tanpa error.
 
-- [ ] **Step 5: Buktikan alur auth benar-benar jalan di browser**
+- [x] **Step 5: Buktikan alur auth benar-benar jalan di browser**
 
 ```powershell
 php artisan serve
@@ -1467,7 +1467,7 @@ Hentikan server dengan `Ctrl+C`.
 
 Langkah ini tidak bisa digantikan oleh test otomatis: test membuktikan controller mengirim prop yang benar, browser membuktikan halamannya benar-benar tampil.
 
-- [ ] **Step 6: Pastikan repo bersih**
+- [x] **Step 6: Pastikan repo bersih**
 
 ```powershell
 git status --short
@@ -1475,7 +1475,7 @@ git status --short
 
 Expected: kosong.
 
-- [ ] **Step 7: Tandai Phase 0 selesai**
+- [x] **Step 7: Tandai Phase 0 selesai**
 
 Di `docs/portly-design.md`, pada bagian "Phase 0 — Fondasi", tambahkan baris:
 
